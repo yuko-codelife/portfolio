@@ -1,0 +1,1490 @@
+/* =========================================================
+   Quiet Conversation ― Portfolio / Brand Site
+   居心地をデザインするWebデザイナー ポートフォリオ
+
+   目次 / Table of contents
+   1. Reset & Base
+   2. Design Tokens (CSS Variables)
+   3. Typography
+   4. Layout Utilities
+   5. Placeholder Images (差し替え位置)
+   6. Header / Nav
+   7. Hero
+   8. Introduction
+   9. Philosophy
+   10. Story / Process
+   11. Works
+   12. Case Study
+   13. Profile
+   14. Contact
+   15. Footer
+   16. Motion / Reduced Motion
+   17. Responsive (Mobile)
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. Reset & Base
+--------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, ol, ul {
+  margin: 0;
+}
+
+ol, ul { list-style: none; padding: 0; }
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -200px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  z-index: 200;
+  transition: top 0.2s ease-out;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+
+/* ---------------------------------------------------------
+   2. Design Tokens
+--------------------------------------------------------- */
+:root {
+  /* --- Brand colors --- */
+  --color-bg: #F8F5F0;          /* 生成り / background */
+  --color-surface: #FDFBF8;     /* 紙 / surface */
+  --color-text: #3E3A36;        /* チャコール / text */
+  --color-text-soft: #6B6459;   /* 柔らかい本文グレー */
+  --color-accent: #6C7A61;      /* モスグリーン */
+  --color-accent-deep: #545F4C; /* accent 濃色（hover等） */
+  --color-subaccent: #D6C5A4;   /* 生成りの砂色 */
+  --color-stone: #E8E2D6;       /* 石 */
+  --color-wood: #A78862;        /* 木 */
+  --color-line: rgba(62, 58, 54, 0.14); /* 細い罫線 */
+  --color-line-soft: rgba(62, 58, 54, 0.08);
+
+  /* --- Typography --- */
+  --font-jp-heading: 'Noto Serif JP', serif;
+  --font-jp-body: 'Zen Kaku Gothic New', sans-serif;
+  --font-en: 'Cormorant Garamond', serif;
+
+  /* --- Spacing scale (大きな余白を基調) --- */
+  --space-2xs: 0.5rem;
+  --space-xs: 1rem;
+  --space-sm: 1.75rem;
+  --space-md: 3rem;
+  --space-lg: 5.5rem;
+  --space-xl: 9rem;
+  --space-2xl: 13rem;
+
+  /* --- Layout --- */
+  --content-max: 1180px;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* --- Motion --- */
+  --ease-quiet: cubic-bezier(0.22, 0.61, 0.22, 1);
+  --dur-s: 400ms;
+  --dur-m: 650ms;
+  --dur-l: 900ms;
+}
+
+
+/* ---------------------------------------------------------
+   3. Typography
+--------------------------------------------------------- */
+body {
+  font-family: var(--font-jp-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.02em;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-jp-heading);
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  /* 日本語見出しが単語・意味のまとまりの途中で折り返されないように */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+p, dd, .p-word-jp, .work-concept, .figure-caption {
+  /* 段落テキストも同様に、フレーズの途中で改行されにくくする */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 意味のまとまりを、どんな画面幅でも絶対に分断しないための保険 */
+.no-break {
+  white-space: nowrap;
+}
+
+.section-kicker {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.section-heading {
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+  margin-bottom: var(--space-md);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 見出し＋キッカーを、本文2カラムの上に全幅で置くための帯。
+   長い日本語の見出しが狭いカラムで意味の途中から折り返されないよう、
+   十分な横幅を確保しつつ、右側に余白を残す非対称配置にする。 */
+.section-head {
+  max-width: 860px;
+  margin-bottom: var(--space-lg);
+}
+
+.body-lead {
+  font-size: 1.15rem;
+  line-height: 2;
+  color: var(--color-text);
+  /* ch は半角基準のため全角の日本語では実寸より狭くなり、
+     <br> で意図した行が途中で折り返されてしまう。em で確保する。 */
+  max-width: 25em;
+  margin-bottom: var(--space-sm);
+}
+
+.body-text {
+  font-size: 1rem;
+  color: var(--color-text-soft);
+  max-width: 30em;
+  margin-bottom: var(--space-sm);
+}
+
+.body-text:last-child { margin-bottom: 0; }
+
+
+/* ---------------------------------------------------------
+   4. Layout Utilities
+--------------------------------------------------------- */
+.section {
+  padding: var(--space-2xl) 0;
+  position: relative;
+}
+
+.section-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section + .section {
+  border-top: 1px solid var(--color-line-soft);
+}
+
+
+/* ---------------------------------------------------------
+   5. Placeholder Images
+   実写に差し替える際は、対象の .ph-image に
+   background-image（または子要素に <img>）を追加してください。
+   data-img 属性は差し替え対象の識別ラベルです。
+--------------------------------------------------------- */
+.ph-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background:
+    radial-gradient(120% 90% at 15% 10%, rgba(255,255,255,0.55), transparent 60%),
+    linear-gradient(155deg, var(--color-stone) 0%, var(--color-subaccent) 55%, var(--color-wood) 130%);
+  overflow: hidden;
+}
+
+.ph-image::after {
+  /* 差し替え用ラベル（開発用の目印。実写差し替え後は自然に消えます） */
+  content: "PHOTO ― " attr(data-img);
+  position: absolute;
+  right: var(--space-xs);
+  bottom: var(--space-xs);
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: rgba(253, 251, 248, 0.75);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+
+
+/* ---------------------------------------------------------
+   6. Header / Nav
+--------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  background: rgba(253, 251, 248, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--dur-l) var(--ease-quiet),
+    backdrop-filter var(--dur-l) var(--ease-quiet),
+    -webkit-backdrop-filter var(--dur-l) var(--ease-quiet),
+    border-color var(--dur-l) var(--ease-quiet);
+}
+
+.site-header.is-scrolled {
+  background: rgba(253, 251, 248, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--color-line-soft);
+}
+
+.header-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 1.1rem var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-mark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.brand-en {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+}
+
+.brand-jp {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--color-text-soft);
+}
+
+.primary-nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.primary-nav a {
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.primary-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transition: right var(--dur-s) var(--ease-quiet);
+}
+
+.primary-nav a:hover::after,
+.primary-nav a:focus-visible::after {
+  right: 0;
+}
+
+.nav-cta {
+  border: 1px solid var(--color-text);
+  padding: 0.5rem 1.1rem;
+}
+.nav-cta::after { display: none; }
+.nav-cta:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0.5rem;
+}
+.nav-toggle-line {
+  width: 22px; height: 1px;
+  background: var(--color-text);
+  transition: transform var(--dur-s) var(--ease-quiet), opacity var(--dur-s);
+}
+
+
+/* ---------------------------------------------------------
+   7. Hero ― 「本の表紙」構造
+   .hero に縦の余白（スライド分）を持たせ、.hero-pin を
+   position: sticky で画面に固定。写真ページ（.hero-photo）
+   だけがスクロールに連動して右へ抜け、抜けきったところで
+   sticky が解除されて次のセクションが通常スクロールで現れます。
+--------------------------------------------------------- */
+.hero {
+  position: relative;
+  /* 100vh（表示分）+ 70vh（写真が完全に抜けるためのスクロール量） */
+  height: calc(100vh + 70vh);
+  min-height: 640px;
+}
+
+.hero-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* 表紙 左ページ：コピー。写真以外は動かさない */
+.hero-cover {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: min(46%, 620px);
+  height: 100%;
+  padding: 0 0 0 var(--gutter);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--color-accent);
+  letter-spacing: 0.04em;
+}
+
+.hero-title {
+  font-size: clamp(1.9rem, 3.6vw, 3rem);
+  line-height: 1.65;
+}
+
+.hero-lead {
+  font-size: 1rem;
+  color: var(--color-text-soft);
+  line-height: 2.05;
+  max-width: 20em;
+}
+
+.hero-scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: var(--space-sm);
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-soft);
+  width: fit-content;
+}
+
+.cue-line {
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: var(--color-text-soft);
+}
+
+/* 右ページ：写真2枚を同じ位置に重ねるスタック */
+.hero-photo-stack {
+  position: absolute;
+  inset: 0 0 0 42%;
+}
+
+/* 手前の写真：常に最前面、動くのはこれだけ */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  will-change: transform;
+  box-shadow: -1px 0 0 var(--color-line);
+  background: var(--color-stone);
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 45%;
+}
+
+/* 奥の写真：最初から静止して同じ位置に配置。手前が退くと現れる */
+.hero-photo-next {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-stone);
+}
+
+.hero-photo-next img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% 38%;
+}
+
+
+/* ---------------------------------------------------------
+   8. Introduction
+   Hero から一歩歩み寄ったような、写真＋テキストの見開き。
+   写真は右寄り・大きめに置き、テキストは左に控えめな幅で。
+   余白は詰めすぎず、Kinfolk / Aesop のような静かな誌面を意識。
+--------------------------------------------------------- */
+.intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  column-gap: var(--space-2xl);
+  align-items: center;
+}
+
+.intro-figure {
+  margin: 0;
+  /* 写真をわずかに右へ、Heroの写真ページと同じ軸に揃える */
+  justify-self: end;
+  width: min(100%, 620px);
+}
+
+/* 写真は本来の比率に近い縦長のまま、無理に切り詰めない */
+.intro-photo-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--color-stone);
+}
+
+.intro-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+/* カーテンが静かに開くような一方向のリビール（フェードは使わない） */
+.intro-photo-curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+  transform-origin: left;
+  transform: scaleX(1);
+  transition: transform var(--dur-l) var(--ease-quiet);
+}
+
+.intro-photo-frame.is-revealed .intro-photo-curtain {
+  transform: scaleX(0);
+}
+
+.figure-caption {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  border-left: 1px solid var(--color-accent);
+  padding-left: var(--space-xs);
+  line-height: 1.9;
+}
+
+
+
+
+/* ---------------------------------------------------------
+   9. Philosophy ― 写真を主役に、言葉は静かに寄り添うだけ
+   「説明」ではなく「体感」。情報量よりも、余白と写真の呼吸を優先する。
+--------------------------------------------------------- */
+.philosophy-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  column-gap: var(--space-2xl);
+  align-items: center;
+}
+
+.philosophy-figure {
+  margin: 0;
+}
+
+.philosophy-photo-frame {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--color-stone);
+}
+
+.philosophy-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 38% 50%;
+}
+
+/* 英語コピーは「読む情報」ではなく、写真に添える小さな視覚要素として */
+.philosophy-caption {
+  margin-top: var(--space-sm);
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--color-text-soft);
+  opacity: 0.65;
+}
+
+.philosophy-words {
+  display: flex;
+  flex-direction: column;
+}
+
+.philosophy-kicker {
+  margin-bottom: var(--space-xs);
+}
+
+.philosophy-words ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.philosophy-words li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* 土台：Atmosphere。他のすべてはここから育つ */
+.word-foundation {
+  margin-bottom: var(--space-xl);
+}
+
+.word-foundation .p-word-en {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: clamp(2.3rem, 4vw, 3rem);
+  color: var(--color-text);
+}
+
+.word-foundation .p-word-jp {
+  font-size: 1rem;
+  color: var(--color-text);
+  letter-spacing: 0.04em;
+}
+
+/* 土台から育つ、残りの4つ。罫線は使わず、字下げと余白だけで関係を示す */
+.word-branch {
+  margin-left: var(--space-md);
+}
+
+.word-branch + .word-branch {
+  margin-top: var(--space-sm);
+}
+
+.word-branch:nth-of-type(3) { margin-left: calc(var(--space-md) + 0.6rem); }
+.word-branch:nth-of-type(4) { margin-left: calc(var(--space-md) + 1.2rem); }
+.word-branch:nth-of-type(5) { margin-left: calc(var(--space-md) + 1.8rem); }
+
+.word-branch .p-word-en {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--color-text-soft);
+}
+
+.word-branch .p-word-jp {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  letter-spacing: 0.04em;
+}
+
+
+/* ---------------------------------------------------------
+   10. Story / Process
+--------------------------------------------------------- */
+.story-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: var(--space-2xl);
+}
+
+.process-flow {
+  display: flex;
+  flex-direction: column;
+}
+
+.process-step {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-line);
+}
+.process-step:first-child { padding-top: 0; border-top: none; }
+.process-step:last-child { border-bottom: 1px solid var(--color-line); }
+
+.process-index {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--color-accent);
+  padding-top: 0.2rem;
+}
+
+.process-body h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.process-body p {
+  color: var(--color-text-soft);
+  max-width: 30em;
+  line-height: 1.95;
+  font-size: 0.96rem;
+}
+
+
+/* ---------------------------------------------------------
+   11. Works ― 写真そのものを主役に。カードにはしない
+--------------------------------------------------------- */
+/* ---------------------------------------------------------
+   Works
+--------------------------------------------------------- */
+
+.works-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(2rem, 4vw, 4.5rem);
+  row-gap: var(--space-lg);
+  align-items: start;
+  margin-top: var(--space-md);
+}
+
+/* 2つ目だけ下げる指定を解除 */
+.work-item,
+.work-item:nth-child(2) {
+  margin-top: 0;
+  min-width: 0;
+}
+
+.work-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 画像枠の高さを完全に統一 */
+.work-image {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--color-stone);
+}
+
+/* 元画像のサイズに関係なく同じ枠内へ収める */
+.work-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform var(--dur-l) var(--ease-quiet),
+    filter var(--dur-l) var(--ease-quiet);
+}
+
+/* TSUMUGI DOGの見せる位置 */
+.work-image img[src*="tsumugi-work"] {
+  object-position: center 42%;
+}
+
+/* CLARISの見せる位置 */
+.work-image img[src*="claris-work"] {
+  object-position: center top;
+}
+
+.work-link:hover .work-image img,
+.work-link:focus-visible .work-image img {
+  transform: scale(1.025);
+  filter: brightness(1.04);
+}
+
+/* 画像下の余白・文章位置も統一 */
+.work-meta {
+  padding-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.work-title {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-en);
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.work-concept {
+  margin: 0 0 1.3rem;
+  min-height: 4em;
+  font-size: 0.9rem;
+  line-height: 2;
+  color: var(--color-text-soft);
+}
+
+.work-cta {
+  display: inline-block;
+  margin-top: auto;
+  padding-bottom: 2px;
+  border-bottom: 1px solid currentColor;
+  font-family: var(--font-en);
+  font-size: 0.82rem;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+/* タブレット・スマホ */
+@media (max-width: 760px) {
+  .works-gallery {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-xl);
+  }
+
+  .work-concept {
+    min-height: auto;
+  }
+}
+
+.work-item,
+.work-item:nth-child(2) {
+  margin-top: 0;
+}
+
+.work-image {
+  aspect-ratio: 3 / 2;
+}
+
+.work-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------------------------------------------------------
+   12. Case Study ― 空気を見る → 想いを知る → 完成したサイトを見る
+--------------------------------------------------------- */
+.case-study {
+  /* 冒頭の写真を画面いっぱいに見せるため、上の余白だけ外す */
+  padding-top: 0;
+}
+
+/* 1. 空気を見る：写真だけの全画面リード。テキストは名前のラベルのみ */
+.case-lead {
+  position: relative;
+  height: 100vh;
+  min-height: 520px;
+  margin-bottom: var(--space-2xl);
+}
+
+.case-lead-photo {
+  position: absolute;
+  inset: 0;
+}
+
+.case-lead-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 46% 58%;
+}
+
+.case-lead-photo img[src*="claris-work"] {
+  object-position: 25% 50%;
+}
+
+.case-lead-label {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--space-lg);
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: var(--color-surface);
+  text-shadow: 0 1px 12px rgba(0,0,0,0.25);
+}
+
+/* 2. 想いを知る：テキスト。余白を大きく取り、静かに読ませる */
+.case-story {
+  max-width: 640px;
+  margin: 0 auto var(--space-2xl);
+}
+
+.case-meta {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-line);
+}
+.case-meta dt {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  margin-bottom: 0.25rem;
+}
+.case-meta dd {
+  font-size: 0.92rem;
+  color: var(--color-text-soft);
+}
+
+/* 3. 完成したサイトを見る：ここで初めてスクリーンショットが現れる */
+.case-reveal {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.case-reveal-label {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-md);
+}
+
+/* .case-reveal-frame {
+  border: 1px solid var(--color-line);
+  padding: 10px;
+  background: var(--color-surface);
+}
+
+.case-reveal-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+} */
+
+.case-reveal-frame {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(8px, 1.5vw, 14px);
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.finished-site-images {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.finished-site-images img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+/* The Finished Siteは超縦長のため、常に表示する */
+.case-reveal.reveal-on-scroll {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   13. Profile
+--------------------------------------------------------- */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.profile-figure .ph-image {
+  aspect-ratio: 3 / 4;
+}
+
+
+/* ---------------------------------------------------------
+   14. Contact
+--------------------------------------------------------- */
+.contact-inner {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.contact-form {
+  margin-top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 480px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-row label {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  letter-spacing: 0.04em;
+}
+
+.form-row input,
+.form-row textarea {
+  background: var(--color-surface);
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.7rem 0.2rem;
+  font-size: 1rem;
+  transition: border-color var(--dur-s) var(--ease-quiet);
+  resize: vertical;
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.btn-submit {
+  align-self: flex-start;
+  margin-top: var(--space-xs);
+  padding: 0.85rem 2.2rem;
+  border: 1px solid var(--color-text);
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  transition: background var(--dur-s) var(--ease-quiet), color var(--dur-s) var(--ease-quiet);
+}
+.btn-submit:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.form-note {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  min-height: 1.2em;
+}
+
+
+/* ---------------------------------------------------------
+   15. Footer
+--------------------------------------------------------- */
+.site-footer {
+  padding: var(--space-lg) 0 var(--space-md);
+  border-top: 1px solid var(--color-line);
+}
+
+.footer-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.footer-brand {
+  font-family: var(--font-en);
+  font-style: italic;
+  color: var(--color-text-soft);
+}
+
+.footer-inner nav ul {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+}
+
+.footer-copy {
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--color-text-soft);
+  margin-top: var(--space-sm);
+  letter-spacing: 0.04em;
+}
+
+
+/* ---------------------------------------------------------
+   16. Motion — scroll reveal utility
+--------------------------------------------------------- */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-m) var(--ease-quiet), transform var(--dur-m) var(--ease-quiet);
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .site-header {
+    transition: none;
+  }
+  .intro-photo-curtain {
+    transition: none;
+    transform: scaleX(0);
+  }
+  .hero {
+    height: auto;
+  }
+  .hero-pin {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-photo-stack {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .hero-photo {
+    position: relative;
+    inset: auto;
+    height: 60vh;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero-photo-next {
+    position: relative;
+    inset: auto;
+    height: 60vh;
+    z-index: auto;
+  }
+  .hero-cover {
+    width: 100%;
+    height: auto;
+    padding: var(--space-lg) var(--gutter);
+  }
+  .work-link .work-image img,
+  .work-link:hover .work-image img {
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   17. Responsive
+--------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .intro-grid,
+  .story-grid,
+  .profile-grid,
+  .contact-inner {
+    grid-template-columns: 1fr;
+  }
+  .profile-grid .profile-figure,
+  .contact-inner .contact-figure,
+  .intro-grid .intro-figure {
+    order: -1;
+  }
+  .intro-figure {
+    justify-self: stretch;
+    width: 100%;
+  }
+  .intro-text {
+    max-width: none;
+  }
+  .works-gallery { gap: var(--space-md); }
+  .work-item:nth-child(2) { margin-top: 0; }
+}
+  .case-lead {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 3 / 2;
+    margin-bottom: var(--space-xl);
+  }
+
+  .case-lead-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .case-lead-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .case-lead-photo img[src*="tsumugi-work"],
+  .case-lead-photo img[src*="claris-work"] {
+    object-position: center;
+  }
+
+  .case-lead-label {
+    left: 20px;
+    bottom: 18px;
+  }
+  .contact-image{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:2px;
+}
+.contact-figure{
+  aspect-ratio:4 / 5;
+  overflow:hidden;
+}
+
+@media (max-width: 880px) {
+  .primary-nav {
+    position: fixed;
+    inset: 0;
+    top: 64px;
+    background: var(--color-bg);
+    transform: translateX(100%);
+    transition: transform var(--dur-m) var(--ease-quiet);
+    padding: var(--space-lg) var(--gutter);
+  }
+  .primary-nav.is-open { transform: translateX(0); }
+  .primary-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+  .primary-nav a { font-size: 1.05rem; }
+  .nav-toggle { display: flex; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-line:first-child {
+    transform: translateY(3px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-line:last-child {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+   .case-lead {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 3 / 2;
+    margin-bottom: var(--space-xl);
+  }
+
+  .case-lead-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .case-lead-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .case-lead-photo img[src*="tsumugi-work"],
+  .case-lead-photo img[src*="claris-work"] {
+    object-position: center;
+  }
+
+  .case-lead-label {
+    left: 20px;
+    bottom: 18px;
+  }
+
+  /* Hero: 複雑な横スライド（sticky）をやめ、縦に積んだ自然なレイアウトへ */
+  .hero { height: auto; min-height: 100vh; }
+  .hero-pin {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+    padding: calc(64px + var(--space-lg)) 0 var(--space-lg);
+  }
+  .hero-cover {
+    width: 100%;
+    height: auto;
+    padding: 0 var(--gutter);
+    text-align: left;
+  }
+  .hero-photo-stack {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0 0;
+  }
+  .hero-photo {
+    position: relative;
+    inset: auto;
+    height: 52vh;
+    box-shadow: none;
+    transform: none !important;
+  }
+  .hero-photo-next {
+    position: relative;
+    inset: auto;
+    height: 52vh;
+    z-index: auto;
+  }
+
+  .philosophy-layout {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-lg);
+  }
+  .philosophy-words {
+    max-width: none;
+  }
+  .word-branch { margin-left: var(--space-sm); }
+  .word-branch:nth-of-type(3) { margin-left: calc(var(--space-sm) + 0.3rem); }
+  .word-branch:nth-of-type(4) { margin-left: calc(var(--space-sm) + 0.6rem); }
+  .word-branch:nth-of-type(5) { margin-left: calc(var(--space-sm) + 0.9rem); }
+
+  .works-gallery { grid-template-columns: 1fr; }
+
+  .section { padding: var(--space-xl) 0; }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --space-2xl: 7rem;
+    --space-xl: 5rem;
+  }
+  .hero-title { font-size: 1.7rem; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ---------------------------------------------------------
+   CLARIS Finished Site
+--------------------------------------------------------- */
+
+.case-reveal--claris {
+  max-width: 1120px;
+}
+
+.claris-showcase {
+  display: grid;
+  gap: clamp(56px, 8vw, 110px);
+  text-align: left;
+}
+
+/* 共通フレーム */
+.claris-showcase__frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 10px;
+}
+
+.claris-showcase__frame::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 10px;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(70, 63, 56, 0.04);
+}
+
+.claris-showcase__frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* TOPは大きく */
+.claris-showcase__main {
+  margin: 0;
+}
+
+.claris-showcase__main .claris-showcase__frame {
+  max-height: 1050px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+/* 下層ページ */
+.claris-showcase__sub {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 4vw, 52px);
+  align-items: start;
+}
+
+.claris-showcase__item {
+  margin: 0;
+}
+
+.claris-showcase__item .claris-showcase__frame {
+  max-height: 760px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+/* キャプション */
+.claris-showcase__caption {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-line);
+}
+
+.claris-showcase__caption > span {
+  font-family: var(--font-en);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.claris-showcase__caption strong {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--font-en);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+
+.claris-showcase__caption p {
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: var(--color-text-soft);
+}
+
+/* 控えめなホバー */
+@media (hover: hover) and (pointer: fine) {
+  .claris-showcase__frame {
+    transition:
+      transform var(--dur-l) var(--ease-quiet),
+      box-shadow var(--dur-l) var(--ease-quiet);
+  }
+
+  .claris-showcase figure:hover .claris-showcase__frame {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 46px rgba(72, 62, 52, 0.08);
+  }
+}
+
+/* タブレット・スマホ */
+@media (max-width: 880px) {
+  .claris-showcase {
+    gap: 64px;
+  }
+
+  .claris-showcase__sub {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
+
+  .claris-showcase__main .claris-showcase__frame,
+  .claris-showcase__item .claris-showcase__frame {
+    max-height: 680px;
+  }
+}
+
+@media (max-width: 560px) {
+  .claris-showcase__frame {
+    padding: 6px;
+  }
+
+  .claris-showcase__frame::before {
+    inset: 6px;
+  }
+
+  .claris-showcase__main .claris-showcase__frame,
+  .claris-showcase__item .claris-showcase__frame {
+    max-height: 520px;
+  }
+
+  .claris-showcase__caption {
+    grid-template-columns: 28px 1fr;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+}

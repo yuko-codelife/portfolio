@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>居心地をデザインする ― Webデザイナー Portfolio</title>
+<meta name="description" content="ホームページを作る前に、相手の話を聞き、想いを整理し、伝わる形へつなげる。居心地をデザインするWebデザイナーのポートフォリオ。">
+
+<!-- Google Fonts: Noto Serif JP / Zen Kaku Gothic New / Cormorant Garamond -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+  画像について / About images
+  このサイトのすべての写真枠は仮のプレースホルダーです。
+  差し替える際は、各 <div class="ph-image" data-img="..."> の
+  背景（style.css 内 .ph-image[data-img="..."] のコメント参照）を
+  実際の <img> タグ、または background-image に置き換えてください。
+============================================================ -->
+
+<!-- スキップリンク（アクセシビリティ） -->
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#hero" class="brand-mark">
+      <span class="brand-en">Quiet Conversation</span>
+      <span class="brand-jp">居心地をデザインする</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav">
+      <span class="nav-toggle-line"></span>
+      <span class="nav-toggle-line"></span>
+      <span class="sr-only">メニューを開く</span>
+    </button>
+    <nav class="primary-nav" id="primaryNav" aria-label="主要ナビゲーション">
+      <ul>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#story">Story</a></li>
+        <li><a href="#works">Works</a></li>
+        <li><a href="#profile">Profile</a></li>
+        <li><a href="#contact" class="nav-cta">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ 1. HERO ============
+    「本の表紙」構造 ＋ 一続きの部屋を歩くような写真の重なり。
+    .hero は縦に長く（100vh + スライド分の余白）確保し、
+    中の .hero-pin だけを position: sticky で画面に固定します。
+
+    右ページには写真が2枚、まったく同じ位置に重なって配置されています。
+      1枚目 .hero-photo      … 最初に見えている写真（窓辺の全景）。z-indexが高く、常に最前面。
+      2枚目 .hero-photo-next … その真下に、最初から静止した状態で配置されている写真
+                                （同じ部屋を数歩歩み寄った、机まわりの視点）。
+
+    スクロールすると 1枚目だけが右へスライドして画面外に抜け、
+    その下に「最初からそこにあった」2枚目が現れます。
+    フェードなどの演出は一切加えず、写真の重なりが動くことだけで
+    「同じ部屋の中を歩いている」感覚をつくります。
+    スライドが完全に終わると sticky が解除され、
+    Introduction セクションのテキストが通常のスクロールで続きます。
+  -->
+  <section class="hero" id="hero" aria-label="ヒーロー">
+    <div class="hero-pin" id="heroPin">
+
+      <!-- 表紙 左ページ：コピー（静止・アニメーションなし） -->
+      <div class="hero-cover">
+        <p class="hero-eyebrow">Design should feel like a quiet conversation.</p>
+        <h1 class="hero-title">
+          想いを聞くことから、<br>
+          デザインは始まる。
+        </h1>
+        <p class="hero-lead">
+          まだ言葉になっていなくても、<br>大丈夫です。<br>
+          一緒に整理しながら、<br>
+          伝わる形へつなげていきます。
+        </p>
+        <a href="#introduction" class="hero-scroll-cue" data-scroll-cue>
+          <span>Scroll</span>
+          <span class="cue-line" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <!-- 右ページ：写真2枚を同じ位置に重ねる -->
+      <div class="hero-photo-stack">
+
+        <!-- 奥：2枚目（最初から静止・Introductionの写真） -->
+        <div class="hero-photo-next" id="heroPhotoNext" aria-hidden="true">
+          <img src="images/intro-window-desk.jpg"
+               alt="同じ部屋の窓辺の机に少し歩み寄った視点。マグカップと開いたノート、活けられた枝もの。"
+               loading="lazy">
+        </div>
+
+        <!-- 手前：1枚目（スクロールで右へ抜ける、動くのはこれだけ） -->
+        <div class="hero-photo" id="heroPhoto">
+          <img src="images/hero-window.jpg" alt="縁側から庭を望む、午後の光が差し込む窓辺。マグカップと開いたノートが置かれている。" loading="eager">
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 2. INTRODUCTION ============
+    Hero で見た部屋の続き。写真が少し近づき、
+    窓際の机のそばまで歩み寄ったような一枚を大きく見せます。
+    フェードやパララックスは使わず、カーテンが静かに開くような
+    一方向のリビール（is-revealed 付与でのみ動く）に留めています。
+  -->
+  <section class="section introduction" id="introduction" aria-labelledby="introduction-heading">
+    <div class="section-inner">
+
+      <div class="section-head">
+        <span class="section-kicker">Introduction</span>
+        <h2 id="introduction-heading" class="section-heading">
+          ホームページをつくる前に、<br>
+          まず、<span class="no-break">あなたの話</span>を<span class="no-break">聞かせてください</span>。
+        </h2>
+      </div>
+
+      <div class="intro-grid">
+        <div class="intro-text">
+          <p class="body-lead">
+            テンプレートを選ぶことは、誰にでもできます。<br>
+            けれど、あなたの言葉やあなたの空気は、<br>
+            テンプレートの中にはありません。
+          </p>
+          <p class="body-text">
+            最初に伺うのは、「どんなサイトが欲しいか」ではなく、
+            「どんな暮らしや仕事を、これからも続けていきたいか」ということ。
+            その答えの中に、デザインの手がかりはすでにあります。
+          </p>
+        </div>
+
+        <figure class="intro-figure">
+          <div class="intro-photo-frame" id="introPhotoFrame">
+            <img src="images/intro-window-desk.jpg"
+                 alt="窓辺の机に歩み寄った視点。マグカップと開いたノート、活けられた枝もの。柔らかな午後の光。"
+                 loading="lazy">
+            <span class="intro-photo-curtain" aria-hidden="true"></span>
+          </div>
+        </figure>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 3. PHILOSOPHY ============
+    このセクションの目的は「説明」ではなく「体感」。
+    窓辺の椅子の写真を主役に据え、テキストは最小限に留める。
+    英語のコピーは情報ではなく、リズムをつくる視覚要素として
+    小さく添えるだけにしている（読ませることを目的としない）。
+  -->
+  <section class="section philosophy" id="philosophy" aria-labelledby="philosophy-heading">
+    <div class="section-inner philosophy-layout">
+
+      <figure class="philosophy-figure">
+        <div class="philosophy-photo-frame">
+          <img src="images/philosophy-window-chair.jpg"
+               alt="窓辺に置かれた一脚の椅子。カーテン越しの光が木漏れ日となって壁に落ちている。">
+        </div>
+        <figcaption class="philosophy-caption">A place before a website.</figcaption>
+      </figure>
+
+      <div class="philosophy-words">
+        <h2 class="sr-only" id="philosophy-heading">Philosophy</h2>
+        <span class="section-kicker philosophy-kicker" aria-hidden="true">Philosophy</span>
+        <ul>
+          <li class="word-foundation"><span class="p-word-en">Atmosphere</span><span class="p-word-jp">空気をつくる。</span></li>
+          <li class="word-branch"><span class="p-word-en">Spacious</span><span class="p-word-jp">余白に、意味がある。</span></li>
+          <li class="word-branch"><span class="p-word-en">Warm</span><span class="p-word-jp">冷たくない、機能。</span></li>
+          <li class="word-branch"><span class="p-word-en">Quiet</span><span class="p-word-jp">静けさは、信頼になる。</span></li>
+          <li class="word-branch"><span class="p-word-en">Honest</span><span class="p-word-jp">飾らず、<br>本質を伝える。</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 4. STORY / PROCESS ============ -->
+  <section class="section story" id="story" aria-labelledby="story-heading">
+    <div class="section-inner">
+
+      <div class="section-head">
+        <span class="section-kicker">Story / Process</span>
+        <h2 id="story-heading" class="section-heading">
+          静かな流れで、<br>
+          かたちにしていく。
+        </h2>
+      </div>
+
+      <div class="story-grid">
+        <div class="story-intro">
+          <p class="body-text">
+            制作は、順番を急ぎません。
+            言葉になる前の想いを聞き、時間をかけて整理し、
+            設計に落とし込み、形にしてからも、育てていく。
+            縁側を歩くように、一歩ずつ進みます。
+          </p>
+        </div>
+
+        <ol class="process-flow">
+        <li class="process-step">
+          <span class="process-index">01</span>
+          <div class="process-body">
+            <h3>話す</h3>
+            <p>まずはお話をうかがいます。事業のことだけでなく、大切にしていることや、これからの暮らし方まで。</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-index">02</span>
+          <div class="process-body">
+            <h3>整理する</h3>
+            <p>伺った言葉を、そのまま形にはしません。一度持ち帰り、伝えたいことの芯を探します。</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-index">03</span>
+          <div class="process-body">
+            <h3>設計する</h3>
+            <p>情報の流れ、余白、写真の呼吸。ページを読む人の視線を想像しながら、静かに組み立てます。</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-index">04</span>
+          <div class="process-body">
+            <h3>形にする</h3>
+            <p>デザインとコーディングを一人で行い、細部の質感まで、責任を持って仕上げます。</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-index">05</span>
+          <div class="process-body">
+            <h3>育てる</h3>
+            <p>公開して終わりではありません。使いながら見えてくる違和感に、その都度向き合っていきます。</p>
+          </div>
+        </li>
+      </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. WORKS ============ -->
+<section class="section works" id="works" aria-labelledby="works-heading">
+  <div class="section-inner">
+
+    <span class="section-kicker">Works</span>
+
+    <h2 id="works-heading" class="section-heading">
+      つくってきたもの。
+    </h2>
+
+    <div class="works-gallery">
+
+      <!-- TSUMUGI DOG -->
+      <article class="work-item">
+        <a href="#case-study-tsumugi" class="work-link">
+
+          <div class="work-image">
+            <img
+              src="images/tsumugi-work-top.jpg"
+              alt="TSUMUGI DOGのWebサイト"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="work-meta">
+            <h3 class="work-title">TSUMUGI DOG</h3>
+
+            <p class="work-concept">
+              一頭ずつ、まっすぐ向き合う。<br>
+              プライベートドッグサロンのブランドサイト。
+            </p>
+
+            <span class="work-cta">View Case</span>
+          </div>
+
+        </a>
+      </article>
+
+      <!-- CLARIS -->
+      <article class="work-item">
+        <a href="#case-study-claris" class="work-link">
+
+          <div class="work-image">
+            <img
+              src="images/claris-work.jpg"
+              alt="CLARIS審美歯科クリニックのWebサイト"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="work-meta">
+            <h3 class="work-title">CLARIS</h3>
+
+            <p class="work-concept">
+              信頼と、静かな高級感を伝える<br>
+              審美歯科クリニックのブランドサイト。
+            </p>
+
+            <span class="work-cta">View Case</span>
+          </div>
+
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+  <!-- ============ 6. CASE STUDY ============
+    「作品を見る」ではなく「空気に触れる」体験。
+    それぞれのブランドについて、三段階で見せる：
+      1. 写真だけの全画面（空気を見る）― UIを含まない、ブランドを象徴する写真のみ
+      2. 想いを綴ったテキスト（想いを知る）
+      3. 完成したサイトのスクリーンショット（完成したサイトを見る）― ここで初めてUIが登場する
+  -->
+
+  <!-- --- Case Study: TSUMUGI DOG --- -->
+  <section class="section case-study" id="case-study-tsumugi" aria-labelledby="case-study-tsumugi-heading">
+
+    <!-- 1. 空気を見る -->
+    <div class="case-lead">
+      <div class="case-lead-photo">
+        <img src="images/tsumugi-work.jpg"
+             alt="TSUMUGI DOG。木の質感と自然光、リネンの布が並ぶ、静かなドッグサロンの一室。"
+             loading="lazy">
+      </div>
+      <span class="case-lead-label">Case Study</span>
+    </div>
+
+    <!-- 2. 想いを知る -->
+    <div class="section-inner case-story">
+      <span class="section-kicker">TSUMUGI DOG</span>
+      <h2 id="case-study-tsumugi-heading" class="section-heading">その子だけの時間を、<br>紡いでいく。</h2>
+      <p class="body-lead">
+        「愛犬を預ける不安を、少しでも軽くしたい」。
+      </p>
+      <p class="body-text">
+        オーナーさまが一番大切にされていたのは、値段でも設備でもなく、
+        「うちの子を安心して任せられる」と感じてもらうことでした。
+        サイトでは説明を削ぎ落とし、犬たちが過ごす部屋の自然光や、
+        木とリネンの質感が伝わる写真を中心に構成。
+        言葉よりも、空気で信頼を伝えることを意識しました。
+      </p>
+      <dl class="case-meta">
+        <div>
+          <dt>役割</dt>
+          <dd>企画・デザイン・コーディング</dd>
+        </div>
+        <div>
+          <dt>制作範囲</dt>
+          <dd>ヒアリング / サイト設計 / 撮影ディレクション</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- 3. 完成したサイトを見る -->
+    <div class="section-inner case-reveal">
+      <span class="case-reveal-label">The Finished Site</span>
+        <div class="case-reveal-frame">
+          <div class="finished-site-images">
+            <img
+              src="images/tsumugi-site-01.png"
+              alt="TSUMUGI DOG公式サイト上部"
+              loading="lazy">
+
+            <img
+              src="images/tsumugi-site-02.png"
+              alt="TSUMUGI DOG公式サイト中部"
+              loading="lazy">
+
+            <img
+              src="images/tsumugi-site-03.png"
+              alt="TSUMUGI DOG公式サイト下部"
+              loading="lazy">
+          </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- --- Case Study: CLARIS --- -->
+  <section class="section case-study" id="case-study-claris" aria-labelledby="case-study-claris-heading">
+
+    <!-- 1. 空気を見る -->
+    <div class="case-lead">
+      <div class="case-lead-photo">
+        <img src="images/claris-work.jpg"
+             alt="CLARIS。柔らかな自然光が差し込む、余白の多い建築的な院内空間。"
+             loading="lazy">
+      </div>
+      <span class="case-lead-label">Case Study</span>
+    </div>
+
+    <!-- 2. 想いを知る -->
+    <div class="section-inner case-story">
+      <span class="section-kicker">CLARIS</span>
+      <h2 id="case-study-claris-heading" class="section-heading">第一印象は、<br>口元から。</h2>
+      <p class="body-lead">
+        「治療」ではなく、「選択肢」を提案するクリニックでありたい。
+      </p>
+      <p class="body-text">
+        院長先生が大切にされていたのは、押しつけない距離感でした。
+        審美歯科という領域は、どうしても「売り込み」の印象を持たれやすい分野です。
+        だからこそサイトでは、価格や施術内容を前面に出さず、
+        余白の多い建築的な空間と自然光の写真を中心に構成し、
+        まず静かな信頼感を伝えることを優先しました。
+      </p>
+      <dl class="case-meta">
+        <div>
+          <dt>役割</dt>
+          <dd>デザイン・コーディング</dd>
+        </div>
+        <div>
+          <dt>制作範囲</dt>
+          <dd>サイト設計 / UI設計 / 予約導線の整理</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- 3. 完成したサイトを見る -->
+    <!-- <div class="section-inner case-reveal">
+      <span class="case-reveal-label">The Finished Site</span>
+      <div class="case-reveal-frame">
+        <img src="images/claris-site-full.jpg"
+             alt="CLARIS 公式サイトのトップページ。中央に配置されたキャッチコピーと、LINE予約・WEB予約ボタンが並ぶ、完成した状態のスクリーンショット。"
+             loading="lazy">
+      </div>
+    </div> -->
+    <!-- 3. 完成したサイトを見る -->
+<div class="section-inner case-reveal case-reveal--claris">
+
+  <span class="case-reveal-label">The Finished Site</span>
+
+  <div class="claris-showcase">
+
+    <!-- TOP -->
+    <figure class="claris-showcase__main">
+      <div class="claris-showcase__frame">
+        <img
+          src="images/claris-index-full.png"
+          alt="CLARIS DENTAL CLINICのトップページ全体"
+          loading="lazy"
+        >
+      </div>
+
+      <figcaption class="claris-showcase__caption">
+        <span>01</span>
+        <div>
+          <strong>Top Page</strong>
+          <p>ブランドの世界観と、治療への導線を設計したトップページ。</p>
+        </div>
+      </figcaption>
+    </figure>
+
+    <!-- 下層ページ2枚 -->
+    <div class="claris-showcase__sub">
+
+      <figure class="claris-showcase__item">
+        <div class="claris-showcase__frame">
+          <img
+            src="images/claris-ceramic-full.png"
+            alt="CLARIS DENTAL CLINICのセラミック治療ページ全体"
+            loading="lazy"
+          >
+        </div>
+
+        <figcaption class="claris-showcase__caption">
+          <span>02</span>
+          <div>
+            <strong>Ceramic</strong>
+            <p>不安への配慮と治療情報を整理した下層ページ。</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="claris-showcase__item">
+        <div class="claris-showcase__frame">
+          <img
+            src="images/claris-case-full.png"
+            alt="CLARIS DENTAL CLINICの症例紹介ページ全体"
+            loading="lazy"
+          >
+        </div>
+
+        <figcaption class="claris-showcase__caption">
+          <span>03</span>
+          <div>
+            <strong>Case Study</strong>
+            <p>症例写真を主役に、情報を比較しやすく設計したページ。</p>
+          </div>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</div>
+
+  </section>
+
+  <!-- ============ 7. PROFILE ============ -->
+  <!-- <section class="section profile" id="profile" aria-labelledby="profile-heading">
+    <div class="section-inner">
+
+      <div class="section-head">
+        <span class="section-kicker">Profile</span>
+        <h2 id="profile-heading" class="section-heading">
+          誰かの暮らしを支えるものづくりが、<br>
+          いつも近くにありました。
+        </h2>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-figure">
+          <div class="ph-image" data-img="woman-laptop" role="img"
+               aria-label="窓辺で考え事をしながらノートパソコンに向かう制作者の写真"></div>
+        </div>
+        <div class="profile-text">
+          <p class="body-text">
+            父は大工でした。休みの日に現場について行っては、
+            木の匂いや、道具が並ぶ音、
+            誰かの暮らしのために黙々と手を動かす背中を見て育ちました。
+            特別な思い出として語れるようなことではなく、
+            ただ、そこにあった日常です。
+          </p>
+          <p class="body-text">
+            今、私が扱っているのは木材ではなく画面の中のデザインですが、
+            「誰かの暮らしや仕事を、静かに支えるものをつくる」という感覚は、
+            あの頃から変わっていない気がしています。
+            派手さよりも、長く使えること。
+            目立つことよりも、そこに居て心地よいこと。
+            そんな基準で、ひとつひとつのサイトをつくっています。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section> -->
+<!-- ============ 7. PROFILE ============ -->
+  <section class="section profile" id="profile" aria-labelledby="profile-heading">
+    <div class="section-inner">
+
+      <div class="section-head">
+        <span class="section-kicker">Profile</span>
+        <h2 id="profile-heading" class="section-heading">
+          誰かの暮らしを支えるものづくりが、<br>
+          いつも近くにありました。
+        </h2>
+      </div>
+
+      <div class="profile-grid">
+
+        <!-- Profile Image -->
+        <figure class="profile-figure">
+          <img
+            src="images/profile-roots.jpg"
+            alt="午後の柔らかな光が差し込む、日本の木工工房。使い込まれた作業台と道具が静かに佇む風景。"
+            loading="lazy"
+          >
+        </figure>
+
+        <!-- Profile Text -->
+        <div class="profile-text">
+          <p class="body-text">
+            父は大工でした。休みの日に現場について行っては、
+            木の匂いや、道具が並ぶ音、
+            誰かの暮らしのために黙々と手を動かす背中を見て育ちました。
+            特別な思い出として語れるようなことではなく、
+            ただ、そこにあった日常です。
+          </p>
+
+          <p class="body-text">
+            今、私が扱っているのは木材ではなく画面の中のデザインですが、
+            「誰かの暮らしや仕事を、静かに支えるものをつくる」という感覚は、
+            あの頃から変わっていない気がしています。
+            派手さよりも、長く使えること。
+            目立つことよりも、そこに居て心地よいこと。
+            そんな基準で、ひとつひとつのサイトをつくっています。
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+  <!-- ============ 8. CONTACT ============ -->
+  <!-- <section class="section contact" id="contact" aria-labelledby="contact-heading">
+    <div class="section-inner contact-inner">
+      <div class="contact-figure">
+        <div class="ph-image" data-img="shadow-plant" role="img"
+             aria-label="白い壁に落ちる木の葉の影と、小さな花瓶の写真"></div>
+      </div>
+      <div class="contact-body">
+        <span class="section-kicker">Contact</span>
+        <h2 id="contact-heading" class="section-heading">
+          あなたの想いを、<br>
+          <span class="no-break">聞かせてください</span>。
+        </h2>
+        <p class="body-lead">
+          まだ相談すると決めていなくても、<br>
+          大丈夫です。
+        </p>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-row">
+            <label for="name">お名前</label>
+            <input type="text" id="name" name="name" autocomplete="name" required>
+          </div>
+          <div class="form-row">
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+          <div class="form-row">
+            <label for="message">お話ししたいこと</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">送信する</button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section> -->
+<!-- ============ 8. CONTACT ============ -->
+  <section class="section contact" id="contact" aria-labelledby="contact-heading">
+    <div class="section-inner contact-inner">
+
+      <div class="contact-figure">
+        <img
+          src="images/contact-workshop.jpg"
+          alt="夕暮れの光が差し込む木工工房。机の上にはノートと鉛筆、マグカップが静かに置かれている。"
+          class="contact-image"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="contact-body">
+        <span class="section-kicker">Contact</span>
+
+        <h2 id="contact-heading" class="section-heading">
+          あなたの想いを、<br>
+          <span class="no-break">聞かせてください</span>。
+        </h2>
+
+        <p class="body-lead">
+          まだ相談すると決めていなくても、<br>
+          大丈夫です。
+        </p>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-row">
+            <label for="name">お名前</label>
+            <input type="text" id="name" name="name" autocomplete="name" required>
+          </div>
+
+          <div class="form-row">
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+
+          <div class="form-row">
+            <label for="message">お話ししたいこと</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            送信する
+          </button>
+
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-brand">Design should feel like a quiet conversation.</p>
+    <nav aria-label="フッターナビゲーション">
+      <ul>
+        <li><a href="#hero">Top</a></li>
+        <li><a href="#works">Works</a></li>
+        <li><a href="#profile">Profile</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <p class="footer-copy">&copy; 2026 Quiet Conversation. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
