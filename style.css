@@ -1488,3 +1488,287 @@ p, dd, .p-word-jp, .work-concept, .figure-caption {
     padding-top: 14px;
   }
 }
+
+/* =========================================================
+   MOBILE FINAL FIX
+========================================================= */
+
+/* ページ全体の横はみ出しを防ぐ */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+main,
+section,
+.section-inner,
+.header-inner,
+.intro-grid,
+.story-grid,
+.profile-grid,
+.contact-inner,
+.works-gallery,
+.case-study,
+.case-story,
+.case-reveal,
+.claris-showcase,
+.claris-showcase__main,
+.claris-showcase__sub,
+.claris-showcase__item {
+  min-width: 0;
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+@media (max-width: 880px) {
+  .site-header {
+    height: 64px;
+    background: #f8f5f0;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+
+  .header-inner {
+    width: 100%;
+    height: 64px;
+    padding: 0 20px;
+  }
+
+  .primary-nav {
+    position: fixed;
+    z-index: 999;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: calc(100dvh - 64px);
+
+    padding: 72px 36px 48px;
+    background: #f8f5f0;
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+
+    transition:
+      transform 0.45s var(--ease-quiet),
+      opacity 0.25s ease,
+      visibility 0s linear 0.45s;
+  }
+
+  .primary-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+
+    transition:
+      transform 0.45s var(--ease-quiet),
+      opacity 0.25s ease,
+      visibility 0s linear 0s;
+  }
+
+  .primary-nav ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 38px;
+  }
+
+  .primary-nav li {
+    width: 100%;
+  }
+
+  .primary-nav a {
+    display: block;
+    width: 100%;
+    padding: 0;
+    font-size: clamp(1.65rem, 8vw, 2.2rem);
+    line-height: 1.25;
+  }
+
+  .primary-nav .nav-cta {
+    width: fit-content;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  .nav-toggle {
+    position: relative;
+    z-index: 1000;
+  }
+}
+
+
+/* =========================================================
+   TEXT OVERFLOW
+========================================================= */
+
+@media (max-width: 880px) {
+  .section-inner {
+    width: 100%;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .section-heading,
+  .hero-title,
+  .body-lead,
+  .body-text,
+  .process-body,
+  .process-body p,
+  .work-concept,
+  .case-story,
+  .case-story p,
+  .profile-text,
+  .contact-body {
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* PCでは改行禁止でも、スマホでは必要なら折り返す */
+  .no-break {
+    white-space: normal;
+  }
+
+  .story-grid {
+    width: 100%;
+    gap: 56px;
+  }
+
+  .process-step {
+    width: 100%;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .process-body {
+    min-width: 0;
+  }
+
+  .process-body p {
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+}
+
+
+/* =========================================================
+   WORKS / CASE STUDY
+========================================================= */
+
+@media (max-width: 880px) {
+  .works-gallery {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .work-item,
+  .work-link,
+  .work-image,
+  .work-meta {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .case-study {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .case-story,
+  .case-reveal,
+  .case-reveal--claris {
+    width: 100%;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .case-reveal-frame {
+    width: 100%;
+    max-width: 100%;
+    padding: 5px;
+  }
+
+  .case-reveal-frame img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .claris-showcase {
+    width: 100%;
+    max-width: 100%;
+    gap: 64px;
+  }
+
+  .claris-showcase__main,
+  .claris-showcase__item,
+  .claris-showcase__frame {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .claris-showcase__sub {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 64px;
+  }
+
+  .claris-showcase__frame img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .claris-showcase__main .claris-showcase__frame,
+  .claris-showcase__item .claris-showcase__frame {
+    max-height: 520px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+
+@media (max-width: 560px) {
+  .section-inner {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .brand-en {
+    font-size: 1rem;
+  }
+
+  .brand-jp {
+    font-size: 0.62rem;
+  }
+
+  .section-heading {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+    line-height: 1.65;
+  }
+
+  .hero-title {
+    font-size: clamp(1.65rem, 8vw, 2rem);
+    line-height: 1.65;
+  }
+
+  .claris-showcase__caption {
+    width: 100%;
+  }
+}
