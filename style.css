@@ -105,9 +105,9 @@ input, textarea {
   --color-line-soft: rgba(62, 58, 54, 0.08);
 
   /* --- Typography --- */
-  --font-jp-heading: 'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
-  --font-jp-body: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
-  --font-en: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-jp-heading: 'Yu Mincho', 'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Noto Serif JP', serif;
+  --font-jp-body: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+  --font-en: Georgia, 'Times New Roman', serif;
 
   /* --- Spacing scale (大きな余白を基調) --- */
   --space-2xs: 0.5rem;

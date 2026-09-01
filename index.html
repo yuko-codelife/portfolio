@@ -6,17 +6,8 @@
 <title>居心地をデザインする ― Webデザイナー Portfolio</title>
 <meta name="description" content="ホームページを作る前に、相手の話を聞き、想いを整理し、伝わる形へつなげる。居心地をデザインするWebデザイナーのポートフォリオ。">
 
-<!-- Performance: critical image is prioritised; web fonts load non-blocking. -->
+<!-- Performance: prioritise the LCP image and avoid external font requests. -->
 <link rel="preload" as="image" href="images/intro-window-desk.jpg" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&family=Zen+Kaku+Gothic+New:wght@300&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap"
-      media="print"
-      onload="this.media='all'">
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&family=Zen+Kaku+Gothic+New:wght@300&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap">
-</noscript>
 
 <link rel="stylesheet" href="style.css">
 </head>
