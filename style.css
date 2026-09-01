@@ -105,9 +105,9 @@ input, textarea {
   --color-line-soft: rgba(62, 58, 54, 0.08);
 
   /* --- Typography --- */
-  --font-jp-heading: 'Noto Serif JP', serif;
-  --font-jp-body: 'Zen Kaku Gothic New', sans-serif;
-  --font-en: 'Cormorant Garamond', serif;
+  --font-jp-heading: 'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+  --font-jp-body: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  --font-en: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 
   /* --- Spacing scale (大きな余白を基調) --- */
   --space-2xs: 0.5rem;
@@ -1771,4 +1771,17 @@ section,
   .claris-showcase__caption {
     width: 100%;
   }
+}
+
+/* ---------------------------------------------------------
+   Performance: skip layout/paint for sections far below viewport
+--------------------------------------------------------- */
+.philosophy,
+.story,
+.works,
+.case-study,
+.profile,
+.contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
 }

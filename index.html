@@ -6,10 +6,17 @@
 <title>居心地をデザインする ― Webデザイナー Portfolio</title>
 <meta name="description" content="ホームページを作る前に、相手の話を聞き、想いを整理し、伝わる形へつなげる。居心地をデザインするWebデザイナーのポートフォリオ。">
 
-<!-- Google Fonts: Noto Serif JP / Zen Kaku Gothic New / Cormorant Garamond -->
+<!-- Performance: critical image is prioritised; web fonts load non-blocking. -->
+<link rel="preload" as="image" href="images/intro-window-desk.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&family=Zen+Kaku+Gothic+New:wght@300&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap"
+      media="print"
+      onload="this.media='all'">
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&family=Zen+Kaku+Gothic+New:wght@300&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap">
+</noscript>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -97,12 +104,13 @@
         <div class="hero-photo-next" id="heroPhotoNext" aria-hidden="true">
           <img src="images/intro-window-desk.jpg"
                alt="同じ部屋の窓辺の机に少し歩み寄った視点。マグカップと開いたノート、活けられた枝もの。"
-               loading="lazy">
+               loading="eager"
+               fetchpriority="high">
         </div>
 
         <!-- 手前：1枚目（スクロールで右へ抜ける、動くのはこれだけ） -->
         <div class="hero-photo" id="heroPhoto">
-          <img src="images/hero-window.jpg" alt="縁側から庭を望む、午後の光が差し込む窓辺。マグカップと開いたノートが置かれている。" loading="eager">
+          <img src="images/hero-window.jpg" alt="縁側から庭を望む、午後の光が差し込む窓辺。マグカップと開いたノートが置かれている。" loading="eager" fetchpriority="auto">
         </div>
 
       </div>
@@ -145,7 +153,8 @@
           <div class="intro-photo-frame" id="introPhotoFrame">
             <img src="images/intro-window-desk.jpg"
                  alt="窓辺の机に歩み寄った視点。マグカップと開いたノート、活けられた枝もの。柔らかな午後の光。"
-                 loading="lazy">
+                 loading="lazy"
+                 decoding="async">
             <span class="intro-photo-curtain" aria-hidden="true"></span>
           </div>
         </figure>
@@ -166,7 +175,9 @@
       <figure class="philosophy-figure">
         <div class="philosophy-photo-frame">
           <img src="images/philosophy-window-chair.jpg"
-               alt="窓辺に置かれた一脚の椅子。カーテン越しの光が木漏れ日となって壁に落ちている。">
+               alt="窓辺に置かれた一脚の椅子。カーテン越しの光が木漏れ日となって壁に落ちている。"
+               loading="lazy"
+               decoding="async">
         </div>
         <figcaption class="philosophy-caption">A place before a website.</figcaption>
       </figure>
@@ -269,7 +280,7 @@
             <img
               src="images/tsumugi-work-top.jpg"
               alt="TSUMUGI DOGのWebサイト"
-              loading="lazy"
+              loading="lazy" decoding="async"
             >
           </div>
 
@@ -295,7 +306,7 @@
             <img
               src="images/claris-work.jpg"
               alt="CLARIS審美歯科クリニックのWebサイト"
-              loading="lazy"
+              loading="lazy" decoding="async"
             >
           </div>
 
@@ -333,7 +344,7 @@
       <div class="case-lead-photo">
         <img src="images/tsumugi-work.jpg"
              alt="TSUMUGI DOG。木の質感と自然光、リネンの布が並ぶ、静かなドッグサロンの一室。"
-             loading="lazy">
+             loading="lazy" decoding="async">
       </div>
       <span class="case-lead-label">Case Study</span>
     </div>
@@ -372,17 +383,17 @@
             <img
               src="images/tsumugi-site-01.png"
               alt="TSUMUGI DOG公式サイト上部"
-              loading="lazy">
+              loading="lazy" decoding="async">
 
             <img
               src="images/tsumugi-site-02.png"
               alt="TSUMUGI DOG公式サイト中部"
-              loading="lazy">
+              loading="lazy" decoding="async">
 
             <img
               src="images/tsumugi-site-03.png"
               alt="TSUMUGI DOG公式サイト下部"
-              loading="lazy">
+              loading="lazy" decoding="async">
           </div>
         </div>
     </div>
@@ -396,7 +407,7 @@
       <div class="case-lead-photo">
         <img src="images/claris-work.jpg"
              alt="CLARIS。柔らかな自然光が差し込む、余白の多い建築的な院内空間。"
-             loading="lazy">
+             loading="lazy" decoding="async">
       </div>
       <span class="case-lead-label">Case Study</span>
     </div>
@@ -433,7 +444,7 @@
       <div class="case-reveal-frame">
         <img src="images/claris-site-full.jpg"
              alt="CLARIS 公式サイトのトップページ。中央に配置されたキャッチコピーと、LINE予約・WEB予約ボタンが並ぶ、完成した状態のスクリーンショット。"
-             loading="lazy">
+             loading="lazy" decoding="async">
       </div>
     </div> -->
     <!-- 3. 完成したサイトを見る -->
@@ -449,7 +460,7 @@
         <img
           src="images/claris-index-full.png"
           alt="CLARIS DENTAL CLINICのトップページ全体"
-          loading="lazy"
+          loading="lazy" decoding="async"
         >
       </div>
 
@@ -470,7 +481,7 @@
           <img
             src="images/claris-ceramic-full.png"
             alt="CLARIS DENTAL CLINICのセラミック治療ページ全体"
-            loading="lazy"
+            loading="lazy" decoding="async"
           >
         </div>
 
@@ -488,7 +499,7 @@
           <img
             src="images/claris-case-full.png"
             alt="CLARIS DENTAL CLINICの症例紹介ページ全体"
-            loading="lazy"
+            loading="lazy" decoding="async"
           >
         </div>
 
@@ -564,7 +575,7 @@
           <img
             src="images/profile-roots.jpg"
             alt="午後の柔らかな光が差し込む、日本の木工工房。使い込まれた作業台と道具が静かに佇む風景。"
-            loading="lazy"
+            loading="lazy" decoding="async"
           >
         </figure>
 
@@ -638,7 +649,7 @@
           src="images/contact-workshop.jpg"
           alt="夕暮れの光が差し込む木工工房。机の上にはノートと鉛筆、マグカップが静かに置かれている。"
           class="contact-image"
-          loading="lazy"
+          loading="lazy" decoding="async"
         >
       </div>
 
@@ -699,6 +710,6 @@
   </div>
 </footer>
 
-<script src="script.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>
